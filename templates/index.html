@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="Keywords" content="Artystyczne malowanie ścian, sztuka, wnetrza, design, rzucanie obrazu, malowanie ścian,
+     malowanie hoteli, malowanie pensjonatów, dekoracje, imprezy artystyczne,color touch, in color we touch,
+      www.colortouch.pl, incolorwetouch@gmail.com"/>
+    <link rel="stylesheet" href="{% static 'css/michu.css' %}">
+
+    <!--<link href="https://fonts.googleapis.com/css?family=Caveat" rel="stylesheet">-->
+    <link rel="icon" href="{% static 'img/icon.svg' %}">
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <title>Color Touch</title>
+
+</head>
+<body>
+<div class="cssload-thecube" id="loader">
+    <div class="cssload-cube cssload-c1"></div>
+    <div class="cssload-cube cssload-c2"></div>
+    <div class="cssload-cube cssload-c4"></div>
+    <div class="cssload-cube cssload-c3"></div>
+</div>
+<div id="logo">
+    <img id="logo-image" src="{% static 'img/logo-image.jpg' %}">
+</div>
+<main>
+    <nav id="buttons">
+        <div class="button" id="left-button" onclick="rotateLeft()">
+            <div class="arrow-left rainbow-background">
+
+            </div>
+            <div id="left-label" class="rainbow-background"></div>
+        </div>
+        <div class="button" id="right-button" onclick="rotateRight()">
+
+            <div id="right-label" class="rainbow-background"></div>
+            <div class="arrow-right rainbow-background">
+
+            </div>
+        </div>
+        <!--<button id="top-button" onclick="rotateTop()">Sufit</button>-->
+        <!--<button id="level-button" style="display: none" onclick="rotateLevel()">Poziom</button>-->
+        <div class="positon-dots">
+            <div class="dot rainbow-background" data-rotated=0></div>
+            <div class="dot rainbow-background" data-rotated=90></div>
+            <div class="dot rainbow-background" data-rotated=180></div>
+            <div class="dot rainbow-background" data-rotated=270></div>
+            <div dots></div>
+
+            <div class="autor">© 2017 Created by <a href="http://www.kwojtanek.pl">Jakub Wojtanek</a></div>
+        </div>
+
+    </nav>
+    <section id="room">
+        <section class="wall front" data-rotated=0>
+            <img id="logo-text"src="{% static 'img/me.svg' %}">
+
+            <div id="o-nas" class="container">
+                <div class="brake-line2 rainbow-background"></div>
+                <div class="about">{{ info.about }}</div>
+            </div>
+        </section>
+        <section  class="wall right" data-rotated=90>
+
+            <div id="galeria" class="container">
+                <h3 class="top-panel">Realizacje: </h3>
+                <div class="brake-line2 rainbow-background"></div>
+                <div class="galery-container">
+                    {% for g in galeria reversed %}
+                    <div class="galery-element">
+                        <div class="galery-name">
+                            <div class="galery-description">{{ g.title }}</div>
+                            <div class="galery-brakeline rainbow-background"></div>
+                            <div class="galery-description" style="color: rgba(0, 0, 0, 0.51);">{{ g.description }}</div>
+                        </div>
+                        {% for p in g.gallery_relation.all|slice:"1" reversed %}
+                        <div class="galery-image" style="background-image: url('{% static p.photo.url_1280x718 %}')"></div>
+
+                        {% endfor %}
+                        <div class="galery-button rainbow-background" onclick="displayGallery('{{g.title}}', setCategory)"></div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <section class="wall back" data-rotated=180>
+            <div id="wzory" class="container">
+                <h3 class="top-panel">Wzory: </h3>
+                <div class="brake-line2 rainbow-background"></div>
+                <div class="galery-container">
+                    {% for p in pattern reversed %}
+                    <div class="galery-element" >
+                        <div class="galery-name">
+                            <div class="galery-description">{{ p.category }}</div>
+                            <div class="galery-brakeline rainbow-background"></div>
+                        </div>
+                        {% for p in p.pattern_relation.all|slice:"1" reversed %}
+                        <div class="galery-image" style="background-image: url('{% static p.photo.url_1280x718 %}')"></div>
+
+                        {% endfor %}
+                        <div class="galery-button rainbow-background" onclick="displayGallery('{{ p.category }}',setPattern)"></div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <section class="wall left " data-rotated=270>
+            <div id="kontakt" class="container">
+                <h4 class="top-panel">Kontakt</h4>
+                <div class="brake-line rainbow-background"></div>
+                <div>
+                    <div class="info-line"><img class="rotate-hue" src="{% static 'icon/phone.svg' %}">
+                        <div class="info-text">728 525 412</div>
+                    </div>
+                    <div class="info-line"><img class="rotate-hue" src="{% static 'icon/email.svg' %}">
+                        <div class="info-text">incolorwetouch@gmail.com</div>
+                    </div>
+                    <div class="info-line">
+                        <img class="rotate-hue" src="{% static 'icon/home.svg' %}">
+                        <div class="info-text">
+                            <a href="/">www.colortouch.pl</a>
+                        </div>
+                    </div>
+                    <div class="info-line">
+                        <img class="rotate-hue" src="{% static 'icon/fb.svg' %}">
+                        <div class="info-text">
+                            <a href="https://www.facebook.com/inColorWeTouch/">facebook.com/inColorWeTouch/</a>
+                        </div>
+                    </div>
+                    <div class="info-line">
+                        <img class="rotate-hue" src="{% static 'icon/social.svg' %}">
+                        <div class="info-text">@inColorWeTouch</div>
+                    </div>
+                    <div class="additional-info-text">W sprawach związanych z ustalaniem cen, szczegółowmi inforamcajami,
+                        albo może poprostu by sobie pogadać, zapraszam do pisania,
+                        dzwonienia, albo myślenia.</div>
+                </div>
+
+                <div class="in-container">
+                    <h4 class="top-panel">Formularz</h4>
+
+                    <div class="brake-line2 rainbow-background"></div>
+
+                    <form id="kontakt-form">
+                        {% csrf_token %}
+                        <tr>
+                            <th>
+                                <label for="id_email">Adres email:</label>
+                            </th>
+                            <td>
+                                <input id="id_email" class="rainbow-background-op" maxlength="254" required name="email" type="email" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="id_message">Wiadomość:</label>
+                            </th>
+                            <td>
+                                <textarea cols="40" class="rainbow-background-op" id="id_message" required name="message" rows="10"></textarea>
+                            </td>
+                        </tr>
+                    </form>
+                    <button id="send-button" onclick="send_data()">Wyślij</button>
+                </div>
+            </div>
+
+        </section>
+        <section id="sufit" class="wall top" data-rotated=top><div class="container">Sufit </div></section>
+    </section>
+</main>
+<section id="fullscreen-gallery">
+
+    <div id="fullscreen-gallery-buttons">
+        <div id="fullscreen-gallery-categories">
+            <div class="fullscreen-gallery-categories-button"
+                 onclick="setCategory()">Realizacje</div>
+            <div class="fullscreen-gallery-categories-button"
+                 onclick="setPattern()">Wzory</div>
+        </div>
+                <div id="hide-gallery" onclick="hideGallery()">
+            <img src="{% static 'icon/cross-mark.svg' %}" class="rotate-hue" id='hide-mark'>
+        </div>
+
+        <div id="brake-line3" class="rainbow-background"></div>
+        <div class="fullscreen-gallery-subcategories">
+            <div id="fs-gallery-sc">
+                {% for g in galeria reversed %}
+                <div class="fullscreen-gallery-categories-button" onclick="clickTarget(this)">{{ g.title }}</div>
+                {% endfor %}
+
+            </div>
+            <div id="fs-pattern-sc">
+                {% for p in pattern reversed %}
+                <div class="fullscreen-gallery-categories-button" onclick="clickTarget(this)">{{ p.category }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+    </div>
+    <div id="fullscreen-images">
+
+        {% for p in pattern reversed %}
+        <div class="fullsrceen-image" data-name='{{ p.category }}'>{% for p in p.pattern_relation.all reversed %}
+            <a class="photo-link" href="{% static p.photo.url %}" target="_blank">
+            <img class="fullsrceen-image-single" src="{% static p.photo.url_1280x718 %}">
+                </a>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        {% for g in galeria reversed %}
+        <div class="fullsrceen-image" data-name='{{ g.title }}'>
+            {% for ga in g.gallery_relation.all reversed %}
+            <a class="photo-link" href="{% static ga.photo.url%}" target="_blank" >
+                <img class="fullsrceen-image-single" src="{% static ga.photo.url_1280x718 %}">
+                </a>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<script src="{% static 'script.js' %}"></script>
+</body>
+</html>
